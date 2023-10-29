@@ -5,25 +5,6 @@ import {selector, useRecoilValue} from 'recoil'
 import {tasksState} from './Tasks'
 import {taskState} from './Task'
 
-const StatContainer = styled.div`
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: ${(props) => props.theme.text};
-`
-
-const StatValue = styled.div`
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 5px;
-`
-
-const StatLabel = styled.div`
-    font-size: 11px;
-    text-transform: uppercase;
-`
-
 const Stat: React.FC<{label: string; value: string | number}> = ({
     label,
     value,
@@ -35,19 +16,6 @@ const Stat: React.FC<{label: string; value: string | number}> = ({
         </StatContainer>
     )
 }
-
-const Divider = styled.div`
-    width: 1px;
-    height: 42px;
-    background-color: ${(props) => props.theme.text};
-    opacity: 0.3;
-`
-
-const Container = styled(Card)`
-    padding-top: 15px;
-    padding-bottom: 15px;
-    margin-bottom: 20px;
-`
 
 const tasksCompleteState = selector({
     key: 'tasksComplete',
@@ -83,3 +51,35 @@ export const Stats: React.FC = () => {
         </Container>
     )
 }
+
+const StatContainer = styled.div`
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: ${(props) => props.theme.text};
+`
+
+const StatValue = styled.div`
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 5px;
+`
+
+const StatLabel = styled.div`
+    font-size: 11px;
+    text-transform: uppercase;
+`
+
+const Divider = styled.div`
+    width: 1px;
+    height: 42px;
+    background-color: ${(props) => props.theme.text};
+    opacity: 0.3;
+`
+
+const Container = styled(Card)`
+    padding-top: 15px;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+`

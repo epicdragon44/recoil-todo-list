@@ -4,6 +4,40 @@ import checkIconSvg from './check.svg'
 import {Card} from './Card'
 import {atomFamily, useRecoilState} from 'recoil'
 
+export const taskState = atomFamily({
+    key: 'task',
+    default: {
+        label: '',
+        complete: false,
+    },
+})
+
+export const Task: React.FC<{id: number}> = ({id}) => {
+    const [{complete, label}, setTask] = useRecoilState(taskState(id))
+
+    return (
+        <Container
+            onClick={() => {
+                setTask({
+                    label,
+                    complete: !complete,
+                })
+            }}
+        >
+            <Check checked={complete}>
+                <CheckIcon
+                    src={checkIconSvg}
+                    style={{opacity: complete ? 1 : 0}}
+                />
+            </Check>
+            <Label>
+                {label}
+                <Strikethrough checked={complete} />
+            </Label>
+        </Container>
+    )
+}
+
 export const TextStyle = css`
     font-size: 17px;
     color: ${(props) => props.theme.text};
@@ -64,37 +98,3 @@ const Strikethrough = styled.div<{checked: boolean}>`
             transform: scaleX(1);
         `};
 `
-
-export const taskState = atomFamily({
-    key: 'task',
-    default: {
-        label: '',
-        complete: false,
-    },
-})
-
-export const Task: React.FC<{id: number}> = ({id}) => {
-    const [{complete, label}, setTask] = useRecoilState(taskState(id))
-
-    return (
-        <Container
-            onClick={() => {
-                setTask({
-                    label,
-                    complete: !complete,
-                })
-            }}
-        >
-            <Check checked={complete}>
-                <CheckIcon
-                    src={checkIconSvg}
-                    style={{opacity: complete ? 1 : 0}}
-                />
-            </Check>
-            <Label>
-                {label}
-                <Strikethrough checked={complete} />
-            </Label>
-        </Container>
-    )
-}

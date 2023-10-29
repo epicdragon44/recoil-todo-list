@@ -8,22 +8,6 @@ import {
 import {useRecoilCallback, useRecoilValue} from 'recoil'
 import {tasksState} from './Tasks'
 
-const InsertInput = styled.input`
-    width: 100%;
-    height: 100%;
-    appearance: none;
-    border: 0;
-    background-color: transparent;
-    outline: none;
-    -webkit-appearance: textfield;
-    ${TaskTextStyle};
-
-    ::-webkit-search-decoration,
-    ::-webkit-search-cancel-button {
-        -webkit-appearance: none;
-    }
-`
-
 export const Input: React.FC = () => {
     const [label, setLabel] = useState('')
     const tasks = useRecoilValue(tasksState)
@@ -59,3 +43,19 @@ export const Input: React.FC = () => {
         </TaskContainer>
     )
 }
+
+const InsertInput = styled.input`
+    width: 100%;
+    height: 100%;
+    appearance: none;
+    border: 0;
+    background-color: transparent;
+    outline: none;
+    -webkit-appearance: textfield;
+    ${TaskTextStyle};
+
+    ::-webkit-search-decoration,
+    ::-webkit-search-cancel-button {
+        -webkit-appearance: none;
+    }
+`
