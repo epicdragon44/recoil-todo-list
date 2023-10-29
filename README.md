@@ -7,7 +7,7 @@ Sample todo list app built with [Recoil](https://recoiljs.org/).
 1. Clone the repo
 
 ```bash
-git clone git@github.com:jacques-blom/recoil-example-app.git
+git clone git@github.com:epicdragon44/recoil-todo-list.git
 ```
 
 2. Install dependencies using Yarn
