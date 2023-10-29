@@ -1,6 +1,48 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
-import {Container as TaskContainer, TextStyle as TaskTextStyle} from './Task'
+import {
+    Container as TaskContainer,
+    TextStyle as TaskTextStyle,
+    taskState,
+} from './Task'
+import {useRecoilCallback, useRecoilValue} from 'recoil'
+import {tasksState} from './Tasks'
+
+export const Input: React.FC = () => {
+    const [label, setLabel] = useState('')
+    const tasks = useRecoilValue(tasksState)
+
+    const insertTask = useRecoilCallback(({set}) => {
+        return (label: string) => {
+            const newTaskId = tasks.length
+            set(tasksState, [...tasks, newTaskId])
+            set(taskState(newTaskId), {
+                label: label,
+                complete: false,
+            })
+        }
+    })
+
+    return (
+        <TaskContainer>
+            <InsertInput
+                placeholder="Insert a new task..."
+                type="search"
+                autoComplete="off"
+                value={label}
+                onChange={({currentTarget}) => {
+                    setLabel(currentTarget.value)
+                }}
+                onKeyUp={({keyCode}) => {
+                    if (keyCode === 13) {
+                        insertTask(label)
+                        setLabel('')
+                    }
+                }}
+            />
+        </TaskContainer>
+    )
+}
 
 const InsertInput = styled.input`
     width: 100%;
@@ -17,27 +59,3 @@ const InsertInput = styled.input`
         -webkit-appearance: none;
     }
 `
-
-export const Input: React.FC = () => {
-    const [label, setLabel] = useState('')
-
-    return (
-        <TaskContainer>
-            <InsertInput
-                placeholder="Insert a new task..."
-                type="search"
-                autoComplete="off"
-                value={label}
-                onChange={({currentTarget}) => {
-                    setLabel(currentTarget.value)
-                }}
-                onKeyUp={({keyCode}) => {
-                    if (keyCode === 13) {
-                        // Insert new task
-                        setLabel('')
-                    }
-                }}
-            />
-        </TaskContainer>
-    )
-}

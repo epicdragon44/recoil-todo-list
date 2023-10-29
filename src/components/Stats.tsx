@@ -1,6 +1,56 @@
 import React from 'react'
 import {Card} from './Card'
 import styled from 'styled-components'
+import {selector, useRecoilValue} from 'recoil'
+import {tasksState} from './Tasks'
+import {taskState} from './Task'
+
+const Stat: React.FC<{label: string; value: string | number}> = ({
+    label,
+    value,
+}) => {
+    return (
+        <StatContainer>
+            <StatValue>{value}</StatValue>
+            <StatLabel>{label}</StatLabel>
+        </StatContainer>
+    )
+}
+
+const tasksCompleteState = selector({
+    key: 'tasksComplete',
+    get: ({get}) => {
+        const taskIds = get(tasksState)
+        const tasks = taskIds.map((id) => {
+            return get(taskState(id))
+        })
+        return tasks.filter((task) => task.complete).length
+    },
+})
+
+const tasksRemainingState = selector({
+    key: 'tasksRemaining',
+    get: ({get}) => {
+        const taskIds = get(tasksState)
+        const tasks = taskIds.map((id) => {
+            return get(taskState(id))
+        })
+        return tasks.filter((task) => !task.complete).length
+    },
+})
+
+export const Stats: React.FC = () => {
+    const tasksComplete = useRecoilValue(tasksCompleteState)
+    const tasksRemaining = useRecoilValue(tasksRemainingState)
+
+    return (
+        <Container>
+            <Stat label="Tasks Complete" value={tasksComplete} />
+            <Divider />
+            <Stat label="Tasks Remaining" value={tasksRemaining} />
+        </Container>
+    )
+}
 
 const StatContainer = styled.div`
     flex: 1;
@@ -21,18 +71,6 @@ const StatLabel = styled.div`
     text-transform: uppercase;
 `
 
-const Stat: React.FC<{label: string; value: string | number}> = ({
-    label,
-    value,
-}) => {
-    return (
-        <StatContainer>
-            <StatValue>{value}</StatValue>
-            <StatLabel>{label}</StatLabel>
-        </StatContainer>
-    )
-}
-
 const Divider = styled.div`
     width: 1px;
     height: 42px;
@@ -45,13 +83,3 @@ const Container = styled(Card)`
     padding-bottom: 15px;
     margin-bottom: 20px;
 `
-
-export const Stats: React.FC = () => {
-    return (
-        <Container>
-            <Stat label="Tasks Complete" value="1" />
-            <Divider />
-            <Stat label="Tasks Remaining" value="3" />
-        </Container>
-    )
-}
